@@ -34,6 +34,7 @@ class _MainNavigationScreenState extends ConsumerState<MainNavigationScreen> {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
+      useSafeArea: true,
       backgroundColor: Colors.transparent,
       builder: (_) => const AddTransactionSheet(),
     );
