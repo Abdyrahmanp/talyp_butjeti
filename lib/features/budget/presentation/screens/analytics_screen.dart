@@ -85,6 +85,26 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen> {
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
                 ),
+                badgeWidget: Container(
+                  padding: const EdgeInsets.all(4),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.2),
+                        blurRadius: 4,
+                        offset: const Offset(0, 2),
+                      ),
+                    ],
+                  ),
+                  child: Icon(
+                    cat?.icon ?? Icons.category,
+                    size: isTouched ? 18.0 : 14.0,
+                    color: color,
+                  ),
+                ),
+                badgePositionPercentageOffset: 0.98,
               ),
             );
             idx++;
@@ -195,6 +215,44 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen> {
                             sections: sections,
                           ),
                         ),
+                      ),
+                      const SizedBox(height: 16),
+                      // Category Icon Legend Chips
+                      Wrap(
+                        spacing: 10,
+                        runSpacing: 8,
+                        alignment: WrapAlignment.center,
+                        children: categoryTotals.entries.map((entry) {
+                          final cat = categoriesMap[entry.key];
+                          final color = cat?.color ?? AppColors.primary;
+                          return Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                            decoration: BoxDecoration(
+                              color: color.withOpacity(0.12),
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(color: color.withOpacity(0.3)),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Icon(
+                                  cat?.icon ?? Icons.category,
+                                  size: 14,
+                                  color: color,
+                                ),
+                                const SizedBox(width: 6),
+                                Text(
+                                  cat?.getName(locale) ?? entry.key,
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.bold,
+                                    color: color,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        }).toList(),
                       ),
                     ],
                   ),

@@ -96,6 +96,16 @@ class BudgetNotifier extends StateNotifier<AsyncValue<BudgetState>> {
     await _repository.deleteTransaction(id);
     await loadBudgetData();
   }
+
+  Future<void> addCategory(CategoryModel category) async {
+    await _repository.addCategory(category);
+    await loadBudgetData();
+  }
+
+  Future<void> deleteCategory(String id) async {
+    await _repository.deleteCategory(id);
+    await loadBudgetData();
+  }
 }
 
 final budgetProvider = StateNotifierProvider<BudgetNotifier, AsyncValue<BudgetState>>((ref) {

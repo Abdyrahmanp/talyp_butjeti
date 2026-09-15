@@ -9,7 +9,6 @@ import 'analytics_screen.dart';
 import 'debts_screen.dart';
 import 'home_dashboard_screen.dart';
 import 'settings_screen.dart';
-import 'subscriptions_screen.dart';
 
 class MainNavigationScreen extends ConsumerStatefulWidget {
   const MainNavigationScreen({super.key});
@@ -25,7 +24,6 @@ class _MainNavigationScreenState extends ConsumerState<MainNavigationScreen> {
     HomeDashboardScreen(),
     AnalyticsScreen(),
     DebtsScreen(),
-    SubscriptionsScreen(),
     SettingsScreen(),
   ];
 
@@ -50,11 +48,13 @@ class _MainNavigationScreenState extends ConsumerState<MainNavigationScreen> {
         index: _currentIndex,
         children: _screens,
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _openAddSheet,
-        tooltip: AppTranslations.get('add_expense', locale),
-        child: const Icon(Icons.add, size: 28),
-      ),
+      floatingActionButton: _currentIndex == 2
+          ? null
+          : FloatingActionButton(
+              onPressed: _openAddSheet,
+              tooltip: AppTranslations.get('add_expense', locale),
+              child: const Icon(Icons.add, size: 28),
+            ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
@@ -80,11 +80,6 @@ class _MainNavigationScreenState extends ConsumerState<MainNavigationScreen> {
             icon: const Icon(Icons.handshake_outlined),
             activeIcon: const Icon(Icons.handshake, color: AppColors.primary),
             label: AppTranslations.get('debts_title', locale),
-          ),
-          BottomNavigationBarItem(
-            icon: const Icon(Icons.subscriptions_outlined),
-            activeIcon: const Icon(Icons.subscriptions, color: AppColors.purple),
-            label: AppTranslations.get('subscriptions_title', locale),
           ),
           BottomNavigationBarItem(
             icon: const Icon(Icons.settings_outlined),

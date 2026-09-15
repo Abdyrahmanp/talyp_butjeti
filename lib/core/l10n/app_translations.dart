@@ -32,8 +32,8 @@ class AppTranslations {
       'streak_days': '{count} Gün Tertipli!',
       'debts_title': 'Bergi-Algy Sazlaşygy',
       'add_debt': 'Bergi / Algy Goş',
-      'lent': 'Berdiz',
-      'borrowed': 'Aldyz',
+      'lent': 'Berdiňiz',
+      'borrowed': 'Aldyňyz',
       'settled': 'Dölendi',
       'mark_settled': 'Dölendi diýip bellemek',
       'subscriptions_title': 'Aýlyk Abunalyklar',
@@ -53,6 +53,18 @@ class AppTranslations {
       'english': 'English',
       'currency': 'TMT',
       
+      'categories_setting': 'Kategoriýalar Dolandyryşy',
+      'add_category_title': 'Täze Kategoriýa Goşmak',
+      'category_name_hint': 'Kategoriýanyň ady (Meselem: Taksi)',
+      'choose_icon': 'Belgini saýlaň (Ikonka)',
+      'choose_color': 'Reňk saýlaň',
+      'delete_category': 'Kategoriýany pozmak',
+      'confirm_delete_category': 'Bu kategoriýany pozmak isleýärsiňizmi?',
+      'custom_category': 'Ulanyjy Kategoriýasy',
+      'all_categories': 'Bütin Kategoriýalar',
+      'expense_categories': 'Çykdajylar',
+      'income_categories': 'Girdejiler',
+      
       // Categories
       'cat_food': 'Nahar/Kafeteriýa',
       'cat_dorm': 'Obşejitiýe/Kireý',
@@ -61,7 +73,8 @@ class AppTranslations {
       'cat_leisure': 'Danç/Gezim',
       'cat_sub': 'Abunalyklar',
       'cat_emergency': 'Gyssagly Ýagdaý',
-      'cat_scholarship': 'Talyphak',
+      'cat_barber': 'Saç aldyrmak',
+      'cat_scholarship': 'Girdeji',
       'cat_other': 'Başga',
     },
     'en': {
@@ -116,6 +129,17 @@ class AppTranslations {
       'turkmen': 'Türkmençe',
       'english': 'English',
       'currency': 'TMT',
+      'categories_setting': 'Categories Management',
+      'add_category_title': 'Add New Category',
+      'category_name_hint': 'Category Name (e.g., Taxi)',
+      'choose_icon': 'Select Icon',
+      'choose_color': 'Select Color',
+      'delete_category': 'Delete Category',
+      'confirm_delete_category': 'Are you sure you want to delete this category?',
+      'custom_category': 'Custom Category',
+      'all_categories': 'All Categories',
+      'expense_categories': 'Expenses',
+      'income_categories': 'Incomes',
       
       // Categories
       'cat_food': 'Food/Canteen',
@@ -125,7 +149,8 @@ class AppTranslations {
       'cat_leisure': 'Social/Leisure',
       'cat_sub': 'Subscriptions',
       'cat_emergency': 'Emergency',
-      'cat_scholarship': 'Scholarship',
+      'cat_barber': 'Haircut / Barber',
+      'cat_scholarship': 'Income',
       'cat_other': 'Other',
     }
   };

@@ -256,12 +256,14 @@ class _AddTransactionSheetState extends ConsumerState<AddTransactionSheet> {
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.baseline,
+                      textBaseline: TextBaseline.alphabetic,
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(
                           _amountStr,
                           style: TextStyle(
-                            fontSize: 36,
+                            fontSize: 34,
                             fontWeight: FontWeight.w800,
                             letterSpacing: 1.0,
                             color: _type == 'expense' ? AppColors.rose : AppColors.emerald,
@@ -271,9 +273,11 @@ class _AddTransactionSheetState extends ConsumerState<AddTransactionSheet> {
                         Text(
                           AppTranslations.get('currency', locale),
                           style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: isDark ? AppColors.textSecondaryDark : AppColors.textSecondaryLight,
+                            fontSize: 34,
+                            fontWeight: FontWeight.w800,
+                            color: _type == 'expense'
+                                ? AppColors.rose.withValues(alpha: 0.85)
+                                : AppColors.emerald.withValues(alpha: 0.85),
                           ),
                         ),
                       ],

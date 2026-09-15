@@ -6,6 +6,7 @@ import '../../../../core/utils/currency_formatter.dart';
 import '../../../../core/utils/haptic_helper.dart';
 import '../providers/budget_provider.dart';
 import '../providers/settings_provider.dart';
+import 'category_management_screen.dart';
 
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
@@ -33,65 +34,6 @@ class SettingsScreen extends ConsumerWidget {
               final val = double.tryParse(controller.text);
               if (val != null && val > 0) {
                 ref.read(settingsProvider.notifier).updateMonthlyBudget(val);
-                ref.read(budgetProvider.notifier).loadBudgetData();
-                HapticHelper.lightImpact();
-                Navigator.pop(ctx);
-              }
-            },
-            child: Text(AppTranslations.get('save', locale)),
-          ),
-        ],
-      ),
-    );
-  }
-
-  void _showEditScholarshipDialog(
-    BuildContext context,
-    WidgetRef ref,
-    double currentAmount,
-    int currentPayDay,
-    String locale,
-  ) {
-    final amountController = TextEditingController(text: currentAmount.toStringAsFixed(0));
-    final dayController = TextEditingController(text: currentPayDay.toString());
-
-    showDialog(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        backgroundColor: Theme.of(context).cardTheme.color,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: Text(AppTranslations.get('scholarship_setting', locale)),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            TextField(
-              controller: amountController,
-              keyboardType: const TextInputType.numberWithOptions(decimal: true),
-              decoration: const InputDecoration(
-                labelText: 'Talyphak Mukdary (TMT)',
-              ),
-            ),
-            const SizedBox(height: 12),
-            TextField(
-              controller: dayController,
-              keyboardType: TextInputType.number,
-              decoration: InputDecoration(
-                labelText: AppTranslations.get('scholarship_day_setting', locale),
-              ),
-            ),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(ctx),
-            child: Text(AppTranslations.get('cancel', locale)),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              final amount = double.tryParse(amountController.text);
-              final day = int.tryParse(dayController.text) ?? 25;
-              if (amount != null && amount >= 0) {
-                ref.read(settingsProvider.notifier).updateScholarship(amount, day.clamp(1, 31));
                 ref.read(budgetProvider.notifier).loadBudgetData();
                 HapticHelper.lightImpact();
                 Navigator.pop(ctx);
@@ -193,30 +135,17 @@ class SettingsScreen extends ConsumerWidget {
                 ),
                 const Divider(height: 1),
                 ListTile(
-                  leading: const Icon(Icons.school, color: AppColors.emerald),
-                  title: Text(AppTranslations.get('scholarship_setting', locale)),
-                  subtitle: Text(
-                    AppTranslations.get(
-                      'payout_date',
-                      locale,
-                      args: {'day': (userProfile?.scholarshipPayDay ?? 25).toString()},
-                    ),
-                    style: const TextStyle(fontSize: 11),
-                  ),
-                  trailing: Text(
-                    CurrencyFormatter.format(userProfile?.scholarshipAmount ?? 750.0),
-                    style: const TextStyle(fontWeight: FontWeight.bold, color: AppColors.emerald),
-                  ),
+                  leading: const Icon(Icons.category_outlined, color: AppColors.emerald),
+                  title: Text(AppTranslations.get('categories_setting', locale)),
+                  trailing: const Icon(Icons.chevron_right),
                   onTap: () {
-                    if (userProfile != null) {
-                      _showEditScholarshipDialog(
-                        context,
-                        ref,
-                        userProfile.scholarshipAmount,
-                        userProfile.scholarshipPayDay,
-                        locale,
-                      );
-                    }
+                    HapticHelper.selectionClick();
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => const CategoryManagementScreen(),
+                      ),
+                    );
                   },
                 ),
               ],

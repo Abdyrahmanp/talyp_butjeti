@@ -8,7 +8,6 @@ import '../providers/budget_provider.dart';
 import '../providers/settings_provider.dart';
 import '../widgets/daily_limit_card.dart';
 import '../widgets/quick_add_categories.dart';
-import '../widgets/scholarship_countdown_card.dart';
 import '../widgets/streak_badge.dart';
 import '../widgets/transaction_tile.dart';
 import 'add_transaction_sheet.dart';
@@ -84,14 +83,6 @@ class HomeDashboardScreen extends ConsumerWidget {
                   daysRemaining: budgetState.daysRemainingInMonth,
                   locale: locale,
                   onQuickAdd: () => _openAddSheet(context),
-                ),
-                const SizedBox(height: 16),
-
-                // 2. Scholarship / Allowance Countdown
-                ScholarshipCountdownCard(
-                  amount: userProfile?.scholarshipAmount ?? 750.0,
-                  payDay: userProfile?.scholarshipPayDay ?? 25,
-                  locale: locale,
                 ),
                 const SizedBox(height: 20),
 

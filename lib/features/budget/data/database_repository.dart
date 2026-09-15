@@ -83,9 +83,17 @@ class DatabaseRepository {
       type: 'expense',
     ),
     CategoryModel(
+      id: 'cat_barber',
+      nameTk: 'Saç aldyrmak',
+      nameEn: 'Haircut / Barber',
+      iconCode: Icons.content_cut.codePoint,
+      colorHex: '#06B6D4',
+      type: 'expense',
+    ),
+    CategoryModel(
       id: 'cat_scholarship',
-      nameTk: 'Talyphak / Girdeji',
-      nameEn: 'Scholarship / Income',
+      nameTk: 'Girdeji',
+      nameEn: 'Income',
       iconCode: Icons.account_balance_wallet.codePoint,
       colorHex: '#10B981',
       type: 'income',
@@ -147,14 +155,36 @@ class DatabaseRepository {
   // --- Categories ---
   Future<List<CategoryModel>> getCategories() async {
     final db = await _dbHelper.database;
-    if (db == null) return _categories;
+    if (db == null) return List.unmodifiable(_categories);
     try {
       final maps = await db.query('categories');
       if (maps.isNotEmpty) {
         return maps.map((map) => CategoryModel.fromMap(map)).toList();
       }
     } catch (_) {}
-    return _categories;
+    return List.unmodifiable(_categories);
+  }
+
+  Future<void> addCategory(CategoryModel category) async {
+    _categories.add(category);
+    final db = await _dbHelper.database;
+    if (db == null) return;
+    try {
+      await db.insert(
+        'categories',
+        category.toMap(),
+        conflictAlgorithm: ConflictAlgorithm.replace,
+      );
+    } catch (_) {}
+  }
+
+  Future<void> deleteCategory(String id) async {
+    _categories.removeWhere((c) => c.id == id);
+    final db = await _dbHelper.database;
+    if (db == null) return;
+    try {
+      await db.delete('categories', where: 'id = ?', whereArgs: [id]);
+    } catch (_) {}
   }
 
   // --- Transactions ---
