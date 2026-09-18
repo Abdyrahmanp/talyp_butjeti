@@ -56,6 +56,41 @@ class SettingsNotifier extends StateNotifier<AsyncValue<UserProfileModel>> {
     state = AsyncValue.data(updated);
     await _repository.updateUserProfile(updated);
   }
+
+  Future<void> completeOnboarding({
+    required double monthlyBudget,
+    required double scholarshipAmount,
+    required int scholarshipPayDay,
+    String? locale,
+  }) async {
+    final current = state.value;
+    final updated = (current ?? const UserProfileModel(
+      id: 1,
+      monthlyBudget: 1500.0,
+      scholarshipAmount: 750.0,
+      scholarshipPayDay: 25,
+      currency: 'TMT',
+      locale: 'tk',
+      isDarkMode: true,
+      isOnboarded: false,
+    )).copyWith(
+      monthlyBudget: monthlyBudget,
+      scholarshipAmount: scholarshipAmount,
+      scholarshipPayDay: scholarshipPayDay,
+      locale: locale ?? current?.locale ?? 'tk',
+      isOnboarded: true,
+    );
+    state = AsyncValue.data(updated);
+    await _repository.updateUserProfile(updated);
+  }
+
+  Future<void> resetOnboarding() async {
+    final current = state.value;
+    if (current == null) return;
+    final updated = current.copyWith(isOnboarded: false);
+    state = AsyncValue.data(updated);
+    await _repository.updateUserProfile(updated);
+  }
 }
 
 final settingsProvider = StateNotifierProvider<SettingsNotifier, AsyncValue<UserProfileModel>>((ref) {

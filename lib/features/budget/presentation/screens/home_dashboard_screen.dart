@@ -8,6 +8,7 @@ import '../providers/budget_provider.dart';
 import '../providers/settings_provider.dart';
 import '../widgets/daily_limit_card.dart';
 import '../widgets/quick_add_categories.dart';
+import '../widgets/scholarship_countdown_card.dart';
 import '../widgets/streak_badge.dart';
 import '../widgets/transaction_tile.dart';
 import 'add_transaction_sheet.dart';
@@ -77,14 +78,25 @@ class HomeDashboardScreen extends ConsumerWidget {
               children: [
                 // 1. Daily Limit Engine Hero Card
                 DailyLimitCard(
-                  dailyLimit: budgetState.dailyLimit,
+                  todayBaseDailyLimit: budgetState.todayBaseDailyLimit,
+                  todayRemainingLimit: budgetState.todayRemainingLimit,
+                  todaySpent: budgetState.todayExpenses,
+                  remainingMonthlyBudget: budgetState.totalRemainingBudget,
                   monthlyBudget: userProfile?.monthlyBudget ?? 1500.0,
                   totalSpent: budgetState.totalExpenses,
                   daysRemaining: budgetState.daysRemainingInMonth,
                   locale: locale,
                   onQuickAdd: () => _openAddSheet(context),
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 12),
+
+                // 2. Next Monthly Income Countdown Card
+                ScholarshipCountdownCard(
+                  amount: userProfile?.scholarshipAmount ?? 750.0,
+                  payDay: userProfile?.scholarshipPayDay ?? 25,
+                  locale: locale,
+                ),
+                const SizedBox(height: 16),
 
                 // 3. One-Tap Quick Log Category Chips (<3 sec entry)
                 Row(

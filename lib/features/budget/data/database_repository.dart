@@ -23,6 +23,7 @@ class DatabaseRepository {
     currency: 'TMT',
     locale: 'tk',
     isDarkMode: true,
+    isOnboarded: false,
   );
 
   final List<CategoryModel> _categories = [

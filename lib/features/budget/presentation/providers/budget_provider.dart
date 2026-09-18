@@ -9,6 +9,10 @@ import 'subscription_provider.dart';
 class BudgetState {
   final List<TransactionModel> transactions;
   final List<CategoryModel> categories;
+  final double todayBaseDailyLimit;
+  final double todayRemainingLimit;
+  final double todayExpenses;
+  final double totalRemainingBudget;
   final double dailyLimit;
   final double totalExpenses;
   final double totalIncome;
@@ -18,6 +22,10 @@ class BudgetState {
   const BudgetState({
     required this.transactions,
     required this.categories,
+    required this.todayBaseDailyLimit,
+    required this.todayRemainingLimit,
+    required this.todayExpenses,
+    required this.totalRemainingBudget,
     required this.dailyLimit,
     required this.totalExpenses,
     required this.totalIncome,
@@ -59,6 +67,25 @@ class BudgetNotifier extends StateNotifier<AsyncValue<BudgetState>> {
         }
       }
 
+      final todayBaseDailyLimit = CalculationEngine.calculateTodayBaseDailyLimit(
+        monthlyBaseBudget: monthlyBaseBudget,
+        monthTransactions: monthTransactions,
+        subscriptions: subscriptions,
+      );
+
+      final todayExpenses = CalculationEngine.calculateTodayExpenses(monthTransactions);
+
+      final todayRemainingLimit = CalculationEngine.calculateTodayRemainingLimit(
+        todayBaseDailyLimit: todayBaseDailyLimit,
+        todayExpenses: todayExpenses,
+      );
+
+      final totalRemainingBudget = CalculationEngine.calculateTotalRemainingBudget(
+        monthlyBaseBudget: monthlyBaseBudget,
+        totalIncome: totalIncome,
+        totalExpenses: totalExpenses,
+      );
+
       final dailyLimit = CalculationEngine.calculateDailyLimit(
         monthlyBaseBudget: monthlyBaseBudget,
         monthTransactions: monthTransactions,
@@ -67,7 +94,7 @@ class BudgetNotifier extends StateNotifier<AsyncValue<BudgetState>> {
 
       final streak = CalculationEngine.calculateUnderBudgetStreak(
         monthTransactions,
-        dailyLimit,
+        todayBaseDailyLimit > 0 ? todayBaseDailyLimit : dailyLimit,
       );
 
       final totalDaysInMonth = DateTime(now.year, now.month + 1, 0).day;
@@ -76,6 +103,10 @@ class BudgetNotifier extends StateNotifier<AsyncValue<BudgetState>> {
       state = AsyncValue.data(BudgetState(
         transactions: monthTransactions,
         categories: categories,
+        todayBaseDailyLimit: todayBaseDailyLimit,
+        todayRemainingLimit: todayRemainingLimit,
+        todayExpenses: todayExpenses,
+        totalRemainingBudget: totalRemainingBudget,
         dailyLimit: dailyLimit,
         totalExpenses: totalExpenses,
         totalIncome: totalIncome,

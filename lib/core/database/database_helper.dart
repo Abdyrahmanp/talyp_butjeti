@@ -34,11 +34,15 @@ class DatabaseHelper {
     final docsDir = await getApplicationDocumentsDirectory();
     final path = join(docsDir.path, filePath);
 
-    return await openDatabase(
+    final db = await openDatabase(
       path,
       version: 1,
       onCreate: _createDB,
     );
+    try {
+      await db.execute('ALTER TABLE users ADD COLUMN is_onboarded INTEGER NOT NULL DEFAULT 0');
+    } catch (_) {}
+    return db;
   }
 
   Future<void> _createDB(Database db, int version) async {
@@ -50,7 +54,8 @@ class DatabaseHelper {
         scholarship_pay_day INTEGER NOT NULL,
         currency TEXT NOT NULL,
         locale TEXT NOT NULL,
-        is_dark_mode INTEGER NOT NULL
+        is_dark_mode INTEGER NOT NULL,
+        is_onboarded INTEGER NOT NULL DEFAULT 0
       )
     ''');
 
@@ -62,6 +67,7 @@ class DatabaseHelper {
       'currency': 'TMT',
       'locale': 'tk',
       'is_dark_mode': 1,
+      'is_onboarded': 0,
     });
 
     await db.execute('''

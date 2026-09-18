@@ -2,8 +2,78 @@ import 'models/subscription_model.dart';
 import 'models/transaction_model.dart';
 
 class CalculationEngine {
-  /// Daily Dynamic Limit Formula:
-  /// (Total Monthly Remaining Budget - Fixed Upcoming Subscriptions) / Days Remaining in Month
+  /// Today's base daily limit at the beginning of today:
+  /// (Remaining Budget before today's expenses - Upcoming Subscriptions) / Days Remaining in Month
+  static double calculateTodayBaseDailyLimit({
+    required double monthlyBaseBudget,
+    required List<TransactionModel> monthTransactions,
+    required List<SubscriptionModel> subscriptions,
+    DateTime? currentDate,
+  }) {
+    final now = currentDate ?? DateTime.now();
+    final totalDaysInMonth = DateTime(now.year, now.month + 1, 0).day;
+    final currentDay = now.day;
+    final daysRemaining = (totalDaysInMonth - currentDay + 1).clamp(1, 31);
+
+    double totalIncome = 0.0;
+    double expensesBeforeToday = 0.0;
+
+    for (final tx in monthTransactions) {
+      if (tx.isExpense) {
+        final isToday = tx.date.year == now.year && tx.date.month == now.month && tx.date.day == now.day;
+        if (!isToday) {
+          expensesBeforeToday += tx.amount;
+        }
+      } else {
+        totalIncome += tx.amount;
+      }
+    }
+
+    final totalBudgetBeforeToday = (monthlyBaseBudget + totalIncome) - expensesBeforeToday;
+
+    double upcomingSubscriptions = 0.0;
+    for (final sub in subscriptions) {
+      if (sub.isActive && sub.dueDay >= currentDay) {
+        upcomingSubscriptions += sub.amount;
+      }
+    }
+
+    final netAvailableBeforeToday = totalBudgetBeforeToday - upcomingSubscriptions;
+    final dailyLimit = netAvailableBeforeToday / daysRemaining;
+
+    return dailyLimit < 0 ? 0.0 : dailyLimit;
+  }
+
+  /// Total expenses incurred today
+  static double calculateTodayExpenses(List<TransactionModel> monthTransactions, {DateTime? currentDate}) {
+    final now = currentDate ?? DateTime.now();
+    double todayExpenses = 0.0;
+    for (final tx in monthTransactions) {
+      if (tx.isExpense && tx.date.year == now.year && tx.date.month == now.month && tx.date.day == now.day) {
+        todayExpenses += tx.amount;
+      }
+    }
+    return todayExpenses;
+  }
+
+  /// Today's remaining limit: (Today's Base Daily Limit - Today's Expenses)
+  static double calculateTodayRemainingLimit({
+    required double todayBaseDailyLimit,
+    required double todayExpenses,
+  }) {
+    return todayBaseDailyLimit - todayExpenses;
+  }
+
+  /// Total Remaining Monthly Budget: (Base Budget + Income - All Expenses)
+  static double calculateTotalRemainingBudget({
+    required double monthlyBaseBudget,
+    required double totalIncome,
+    required double totalExpenses,
+  }) {
+    return (monthlyBaseBudget + totalIncome) - totalExpenses;
+  }
+
+  /// Daily Dynamic Limit Formula (Legacy / fallback):
   static double calculateDailyLimit({
     required double monthlyBaseBudget,
     required List<TransactionModel> monthTransactions,

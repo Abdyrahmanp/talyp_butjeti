@@ -7,6 +7,7 @@ import '../../../../core/utils/haptic_helper.dart';
 import '../providers/budget_provider.dart';
 import '../providers/settings_provider.dart';
 import 'category_management_screen.dart';
+import 'onboarding_setup_screen.dart';
 
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
@@ -144,6 +145,25 @@ class SettingsScreen extends ConsumerWidget {
                       context,
                       MaterialPageRoute(
                         builder: (_) => const CategoryManagementScreen(),
+                      ),
+                    );
+                  },
+                ),
+                const Divider(height: 1),
+                ListTile(
+                  leading: const Icon(Icons.auto_awesome_outlined, color: AppColors.primary),
+                  title: Text(AppTranslations.get('onboarding_settings_tile', locale)),
+                  subtitle: Text(
+                    AppTranslations.get('onboarding_settings_subtitle', locale),
+                    style: const TextStyle(fontSize: 12),
+                  ),
+                  trailing: const Icon(Icons.chevron_right),
+                  onTap: () {
+                    HapticHelper.selectionClick();
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => const OnboardingSetupScreen(isEditing: true),
                       ),
                     );
                   },

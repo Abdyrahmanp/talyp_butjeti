@@ -6,6 +6,7 @@ class UserProfileModel {
   final String currency;
   final String locale;
   final bool isDarkMode;
+  final bool isOnboarded;
 
   const UserProfileModel({
     required this.id,
@@ -15,6 +16,7 @@ class UserProfileModel {
     required this.currency,
     required this.locale,
     required this.isDarkMode,
+    this.isOnboarded = false,
   });
 
   Map<String, dynamic> toMap() {
@@ -26,6 +28,7 @@ class UserProfileModel {
       'currency': currency,
       'locale': locale,
       'is_dark_mode': isDarkMode ? 1 : 0,
+      'is_onboarded': isOnboarded ? 1 : 0,
     };
   }
 
@@ -38,6 +41,7 @@ class UserProfileModel {
       currency: map['currency'] as String,
       locale: map['locale'] as String,
       isDarkMode: (map['is_dark_mode'] as int) == 1,
+      isOnboarded: (map['is_onboarded'] as int? ?? 0) == 1,
     );
   }
 
@@ -49,6 +53,7 @@ class UserProfileModel {
     String? currency,
     String? locale,
     bool? isDarkMode,
+    bool? isOnboarded,
   }) {
     return UserProfileModel(
       id: id ?? this.id,
@@ -58,6 +63,7 @@ class UserProfileModel {
       currency: currency ?? this.currency,
       locale: locale ?? this.locale,
       isDarkMode: isDarkMode ?? this.isDarkMode,
+      isOnboarded: isOnboarded ?? this.isOnboarded,
     );
   }
 }

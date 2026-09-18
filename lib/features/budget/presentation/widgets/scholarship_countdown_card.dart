@@ -28,11 +28,11 @@ class ScholarshipCountdownCard extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: AppColors.emerald.withOpacity(0.15),
+                color: AppColors.emerald.withValues(alpha: 0.15),
                 borderRadius: BorderRadius.circular(16),
               ),
               child: const Icon(
-                Icons.school,
+                Icons.payments_rounded,
                 color: AppColors.emerald,
                 size: 28,
               ),
