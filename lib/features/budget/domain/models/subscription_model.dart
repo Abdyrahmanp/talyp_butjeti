@@ -1,3 +1,6 @@
+import 'package:flutter/material.dart';
+import '../../../../core/utils/icon_helper.dart';
+
 class SubscriptionModel {
   final String id;
   final String title;
@@ -16,6 +19,8 @@ class SubscriptionModel {
     required this.isActive,
     required this.iconCode,
   });
+
+  IconData get icon => IconHelper.getIcon(iconCode);
 
   Map<String, dynamic> toMap() {
     return {

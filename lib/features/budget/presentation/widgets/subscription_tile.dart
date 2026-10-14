@@ -40,7 +40,7 @@ class SubscriptionTile extends StatelessWidget {
               borderRadius: BorderRadius.circular(14),
             ),
             child: Icon(
-              IconData(subscription.iconCode, fontFamily: 'MaterialIcons'),
+              subscription.icon,
               color: AppColors.purple,
               size: 22,
             ),

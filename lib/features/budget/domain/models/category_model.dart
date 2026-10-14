@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../../core/utils/icon_helper.dart';
 
 class CategoryModel {
   final String id;
@@ -17,7 +18,7 @@ class CategoryModel {
     required this.type,
   });
 
-  IconData get icon => IconData(iconCode, fontFamily: 'MaterialIcons');
+  IconData get icon => IconHelper.getIcon(iconCode);
 
   Color get color {
     final buffer = StringBuffer();
